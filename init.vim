@@ -3,12 +3,16 @@ call plug#begin()
 	Plug 'vim-airline/vim-airline'
 	Plug 'ryanoasis/vim-devicons'
 	Plug 'elvessousa/sobrio'
-	Plug 'shaunsingh/solarized.nvim'
-	Plug 'micha/vim-colors-solarized'
 
 	Plug 'kyazdani42/nvim-web-devicons'
 	Plug 'romgrk/barbar.nvim'
-
+	Plug 'tomasr/molokai'
+	Plug 'bronson/vim-trailing-whitespace'
+	"Plug 'altercation/vim-colors-solarized'
+	Plug 'tpope/vim-commentary'
+	Plug 'valloric/matchtagalways'
+	Plug 'Yggdroot/indentLine'
+	Plug 'dracula/vim', { 'as': 'dracula' }
 
 
 	" Utilities
@@ -20,9 +24,8 @@ call plug#begin()
 
 	" Completion / linters / formatters
 	" Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'}
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-	Plug 'plasticboy/vim-markdown'
 	Plug 'pantharshit00/vim-prisma'
+	Plug 'mileszs/ack.vim'
 
 	" Git
 	Plug 'airblade/vim-gitgutter'
@@ -74,13 +77,21 @@ endif
 
 " Color scheme and themes
 let t_Co = 256
-colorscheme sobrio
+colorscheme dracula
 "colorscheme solarized
 
 " Airline
 let g:airline_theme = 'sobrio'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+
+" Searching
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+nnoremap <C-s> :Ack!<Space>
+
 
 " Italics
 let &t_ZH = "\e[3m"
