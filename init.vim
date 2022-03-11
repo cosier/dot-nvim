@@ -2,7 +2,6 @@ call plug#begin()
 	" Appearance
 	Plug 'vim-airline/vim-airline'
 	Plug 'ryanoasis/vim-devicons'
-	Plug 'elvessousa/sobrio'
 
 	Plug 'kyazdani42/nvim-web-devicons'
 	Plug 'romgrk/barbar.nvim'
@@ -16,16 +15,20 @@ call plug#begin()
 
 
 	" Utilities
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+
 	Plug 'sheerun/vim-polyglot'
-	Plug 'jiangmiao/auto-pairs'
+	"Plug 'jiangmiao/auto-pairs'
 	Plug 'ap/vim-css-color'
 	Plug 'preservim/nerdtree'
 	Plug 'kien/ctrlp.vim'
 
 	" Completion / linters / formatters
 	" Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'}
-	Plug 'pantharshit00/vim-prisma'
+	"Plug 'pantharshit00/vim-prisma'
 	Plug 'mileszs/ack.vim'
+	" Plug 'preservim/nerdcommenter'
 
 	" Git
 	Plug 'airblade/vim-gitgutter'
@@ -35,6 +38,18 @@ call plug#end()
 filetype plugin indent on
 syntax on
 
+" Leader
+"let mapleader = ','
+let mapleader = "\<Space>"
+
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+
+nnoremap <silent> <Leader>s :FixWhitespace<CR>
+nnoremap <silent>    <Leader>cc :Commentary<CR>
 
 " Move to previous/next
 nnoremap <silent>    <A-,> :BufferPrevious<CR>
@@ -70,7 +85,7 @@ let term_program = $TERM_PROGRAM
 if term_program !=? 'Apple_Terminal'
 	set termguicolors
 else
-	if $TERM !=? 'xterm-256color'
+	if $TERM !=? 'tmux-256color'
 		set termguicolors
 	endif
 endif
@@ -78,10 +93,9 @@ endif
 " Color scheme and themes
 let t_Co = 256
 colorscheme dracula
-"colorscheme solarized
 
 " Airline
-let g:airline_theme = 'sobrio'
+let g:airline_theme = 'dracula'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
@@ -114,11 +128,9 @@ let g:tex_conceal = ''
 let g:vim_markdown_math = 1
 
 " Language server stuff
-let g:python3_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
 command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
-" Leader
-let mapleader = ','
 
 " Normal mode remappings
 nnoremap <C-q> :q!<CR>
