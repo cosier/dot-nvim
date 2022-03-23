@@ -11,7 +11,12 @@ call plug#begin()
 	Plug 'tpope/vim-commentary'
 	Plug 'valloric/matchtagalways'
 	Plug 'Yggdroot/indentLine'
+
+	" Themes
 	Plug 'dracula/vim', { 'as': 'dracula' }
+	Plug 'thedenisnikulin/vim-cyberpunk'
+
+
 
 
 	" Utilities
@@ -48,6 +53,9 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 
+nnoremap <silent>    <Leader>bb :buffers<cr>
+nnoremap <silent>    <Leader>b :b <tab><tab>
+
 nnoremap <silent> <Leader>s :FixWhitespace<CR>
 nnoremap <silent>    <Leader>cc :Commentary<CR>
 
@@ -57,6 +65,10 @@ nnoremap <silent>    <A-.> :BufferNext<CR>
 " Re-order to previous/next
 nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
 nnoremap <silent>    <A->> :BufferMoveNext<CR>
+
+" Delete in INSERT mode
+imap <C-D> <C-O>x
+
 
 " Options
 set background=dark
@@ -91,13 +103,21 @@ else
 endif
 
 " Color scheme and themes
-let t_Co = 256
+" let t_Co = 256
 colorscheme dracula
+set termguicolors
+"colorscheme cyberpunk
+let g:airline_theme='cyberpunk'
+
+set cursorline
+
 
 " Airline
-let g:airline_theme = 'dracula'
+" let g:airline_theme = 'dracula'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
 
 " Searching
 if executable('ag')
@@ -131,6 +151,61 @@ let g:vim_markdown_math = 1
 let g:python3_host_prog = '/usr/local/bin/python3'
 command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
+" Folding
+"highlight Folded
+"set nofoldenable
+"set foldlevel=99
+"set fillchars=fold:\
+"set foldtext=CustomFoldText()
+"setlocal foldmethod=expr
+"setlocal foldexpr=GetPotionFold(v:lnum)
+
+function! GetPotionFold(lnum)
+  if getline(a:lnum) =~? '\v^\s*$'
+    return '-1'
+  endif
+  let this_indent = IndentLevel(a:lnum)
+  let next_indent = IndentLevel(NextNonBlankLine(a:lnum))
+  if next_indent == this_indent
+    return this_indent
+  elseif next_indent < this_indent
+    return this_indent
+  elseif next_indent > this_indent
+    return '>' . next_indent
+  endif
+endfunction
+function! IndentLevel(lnum)
+    return indent(a:lnum) / &shiftwidth
+endfunction
+function! NextNonBlankLine(lnum)
+  let numlines = line('$')
+  let current = a:lnum + 1
+  while current <= numlines
+      if getline(current) =~? '\v\S'
+          return current
+      endif
+      let current += 1
+  endwhile
+  return -2
+endfunction
+function! CustomFoldText()
+  " get first non-blank line
+  let fs = v:foldstart
+  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+  if fs > v:foldend
+      let line = getline(v:foldstart)
+  else
+      let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let foldSize = 1 + v:foldend - v:foldstart
+  let foldSizeStr = " " . foldSize . " lines "
+  let foldLevelStr = repeat("+--", v:foldlevel)
+  let expansionString = repeat(" ", w - strwidth(foldSizeStr.line.foldLevelStr))
+  return line . expansionString . foldSizeStr . foldLevelStr
+endfunction
+
 
 " Normal mode remappings
 nnoremap <C-q> :q!<CR>
@@ -140,6 +215,7 @@ nnoremap <F6> :sp<CR>:terminal<CR>
 nnoremap <F10> :CocCommand tsserver.organizeImports<CR>
 
 
+nnoremap <leader>s :w<CR>
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
