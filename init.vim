@@ -1,4 +1,6 @@
 call plug#begin()
+  " Core
+	Plug 'lambdalisue/suda.vim'
 	" Appearance
 	Plug 'vim-airline/vim-airline'
 	Plug 'ryanoasis/vim-devicons'
@@ -110,6 +112,9 @@ set termguicolors
 let g:airline_theme='cyberpunk'
 
 set cursorline
+
+" Nerd Tree
+let NERDTreeQuitOnOpen=1
 
 
 " Airline
