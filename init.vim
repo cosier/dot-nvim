@@ -236,9 +236,3 @@ map <F12> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" Auto Commands
-augroup auto_commands
-	autocmd BufWrite *.py call CocAction('format')
-	autocmd BufWrite *.php call CocAction('runCommand','php-cs-fixer.fix')
-	autocmd FileType scss setlocal iskeyword+=@-@
-augroup END
