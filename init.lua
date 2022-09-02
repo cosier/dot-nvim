@@ -16,7 +16,7 @@ end
 local use = require('packer').use
 require('packer').startup(function()
   use 'wbthomason/packer.nvim' -- Package manager
-  use { 'ibhagwan/fzf-lua', requires = { 'kyazdani42/nvim-web-devicons' }}
+  --use { 'ibhagwan/fzf-lua', requires = { 'kyazdani42/nvim-web-devicons' }}
 
   use { 'tom-anders/telescope-vim-bookmarks.nvim' }
 
@@ -37,6 +37,9 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug 'yegappan/bufselect'
 Plug 'romgrk/barbar.nvim'
 Plug 'nvim-lua/plenary.nvim'
+
+Plug('ibhagwan/fzf-lua', { branch ='main'})
+Plug 'kyazdani42/nvim-web-devicons'
 
 
 Plug 'tpope/vim-sensible'
