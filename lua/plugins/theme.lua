@@ -1,0 +1,1 @@
+/home/bailey/.config/omarchy/current/theme/neovim.lua
